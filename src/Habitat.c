@@ -104,14 +104,11 @@ void adimKararlariniYap(Habitat* habitat) {
                    break;
                 }         
             // komsu hücresini belirle
-			
             komsu = habitat->grid[nextRow][nextColumn];
-			//kararAl(current, komsu);
             printf("Current: (%d, %d)\n", current->konumX, current->konumY);
             printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
-           
-		   kararAl(current, komsu);
+            kararAl(current, komsu);
             // Habitatı güncelle
 			printf("\n");
             habitatYazdir(habitat);
