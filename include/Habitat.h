@@ -12,7 +12,7 @@ typedef struct {
 } Habitat;
 
 Habitat* yeni_Habitat();
-void kararAl(Canli* current, Canli* komsu);
+void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi);
 //void oyunuBaslat(Habitat* habitat, int satir_sayisi, int sutun_sayisi);
 char** veri_matrisi_oku(const char* dosya_ad, int* satir_sayisi, int* sutun_sayisi);
 void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun_sayisi);

@@ -204,12 +204,12 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             printf("Current: (%d, %d)\n", current->konumX, current->konumY);
             printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
-            kararAl(current, komsu);
+            kararAl(current,komsu,satir_sayisi,sutun_sayisi);
             // Habitatı güncelle
 			
 			printf("\n");
             habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
-            //system("cls");
+           // system("cls");
             // Her adımda kalan canlı sayısını kontrol et
             kalan_canli_sayisi = 0;
             for (int m = 0; m < satir_sayisi; m++) {
@@ -246,7 +246,7 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 
 		
 		
-	void kararAl(Canli* current, Canli* komsu) {
+void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
     // İki canlının türüne göre işlem yap
     
         if (current->sembol == 'B' && komsu->sembol == 'P') { 
@@ -272,13 +272,21 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 				bitkisil((Bitki**)komsu);
 				komsu->sembol = 'X';
 				
-            } else {
-			
+            } else if (((Bitki*)current)->sayisalDeger < ((Bitki*)komsu)->sayisalDeger){	
 
                 bitkisil((Bitki**)current);
 				current->sembol = 'X';
 				
             }
+			 else if (((Bitki*)current)->sayisalDeger == ((Bitki*)komsu)->sayisalDeger){
+				if(abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) < abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi)){
+					            bitkisil((Bitki**)current);
+								current->sembol = 'X';
+				}
+				else if (abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) >= abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi))
+				{ bitkisil((Bitki**)komsu);
+								komsu->sembol = 'X';}  
+			 }
 		} 
 		
 		
@@ -299,11 +307,25 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             if (((Bocek*)current)->sayisalDeger > ((Bocek*)komsu)->sayisalDeger) {
                 boceksil((Bocek**)komsu);
 				komsu->sembol = 'X';
-            } else {
+            } else if (((Bocek*)current)->sayisalDeger < ((Bocek*)komsu)->sayisalDeger){
                 boceksil((Bocek**)current);
 				current->sembol = 'X';
             }
-        } else if (current->sembol == 'P' && komsu->sembol == 'C') {
+			else if (((Bocek*)current)->sayisalDeger == ((Bocek*)komsu)->sayisalDeger){
+				if(abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) < abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi)){
+					            boceksil((Bocek**)current);
+								current->sembol = 'X';
+				}
+				else if (abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) >= abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi))
+				{ boceksil((Bocek**)komsu);
+								komsu->sembol = 'X';}
+               }	
+        } 
+		
+		
+		
+		
+		else if (current->sembol == 'P' && komsu->sembol == 'C') {
             piresil((Pire**)&current);
 			current->sembol = 'X';
         } else if (current->sembol == 'P' && komsu->sembol == 'S') {
@@ -318,11 +340,34 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             if (((Pire*)current)->sayisalDeger > ((Pire*)komsu)->sayisalDeger) {
                 piresil((Pire**)&komsu);
 				komsu->sembol = 'X';
-            } else {
+            } else if(((Pire*)current)->sayisalDeger < ((Pire*)komsu)->sayisalDeger) {
                 piresil((Pire**)&current);
 				current->sembol= 'X';
             }
-        } else if (current->sembol == 'S' && komsu->sembol == 'P') {
+			else if (((Pire*)current)->sayisalDeger == ((Pire*)komsu)->sayisalDeger) {
+				if(abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) < abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi)){
+					            piresil((Pire**)current);
+								current->sembol = 'X';
+				}
+				else if (abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) >= abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi))
+				{ piresil((Pire**)komsu);
+								komsu->sembol = 'X';}
+				
+			}
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+		else if (current->sembol == 'S' && komsu->sembol == 'P') {
             piresil((Pire**)&komsu);
 			komsu->sembol = 'X';
         } else if (current->sembol == 'S' && komsu->sembol == 'C') {
@@ -335,10 +380,19 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             if (((Sinek*)current)->sayisalDeger > ((Sinek*)komsu)->sayisalDeger) {
                 sineksil((Sinek**)current);
 				current->sembol = 'X';
-            } else {
+            } else if(((Sinek*)current)->sayisalDeger < ((Sinek*)komsu)->sayisalDeger) {
                 sineksil((Sinek**)komsu);
 				komsu->sembol = 'X';
             }
+			else if (((Sinek*)current)->sayisalDeger == ((Sinek*)komsu)->sayisalDeger){
+				
+			if(abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) < abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi)){
+					            sineksil((Sinek**)current);
+								current->sembol = 'X';
+				}
+				else if (abs(current->konumX - satir_sayisi) + abs(current->konumY - sutun_sayisi) >= abs(komsu->konumX - satir_sayisi) + abs(komsu->konumY - sutun_sayisi))
+				{ sineksil((Sinek**)komsu);
+								komsu->sembol = 'X';}
         }
 
-    }
+}}
