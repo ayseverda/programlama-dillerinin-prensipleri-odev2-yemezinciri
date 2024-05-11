@@ -18,13 +18,9 @@ pire->sayisalDeger = sayisalDeger; // sayisalDeger'i atama
 
 
 void piresil(Pire** pire) {
-    if (*pire == NULL) {
-        return;
-    }
+    if (pire == NULL || *pire == NULL) return;
 
-    // İlgili kaynakları serbest bırak
     free(*pire);
-    *pire = NULL; // Pire konumuna NULL atama
-    printf("Pire silindi....");
+    *pire = NULL;
+	printf("piresilindi");
 }
-
