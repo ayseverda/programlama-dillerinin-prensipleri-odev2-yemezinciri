@@ -235,6 +235,7 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
         for (int j = 0; j < sutun_sayisi; j++) {
             if (habitat->grid[i][j] != NULL && habitat->grid[i][j]->sembol != 'X') {
                 printf("Son kalan canli: %c\n", habitat->grid[i][j]->sembol);
+				 printf("Son kalan canlinin konumu: (%d, %d)\n", i, j);
                 return;
             }
         }
