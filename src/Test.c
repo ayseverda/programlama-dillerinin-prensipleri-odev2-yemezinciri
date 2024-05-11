@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h> // for free
+#include <conio.h> // for getch
 #include "Habitat.h"
 #include "Bocek.h"
 #include "Canli.h"
@@ -13,18 +14,22 @@ int main() {
 
     Habitat* habitat = yeni_Habitat();
     habitatOlustur(habitat, matris, satir_sayisi, sutun_sayisi);
-oyunuBaslat( habitat, satir_sayisi, sutun_sayisi);
+    
+    printf("Habitat olusturuldu. Devam etmek icin bir tusa basin...\n");
+	habitatYazdir(habitat,satir_sayisi, sutun_sayisi);
+    getch(); // Kullanıcının bir tuşa basmasını bekler
+    
+    // Oyunu başlat
     printf("Habitat:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 
     printf("\nAdim kararlarini yapiliyor...\n");
-	
     adimKararlariniYap(habitat, satir_sayisi, sutun_sayisi);
-	
+   
     printf("\nSon durum:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 
-    // Habitat ve matris için ayrılan belleği serbest bırak
+    // Bellek temizleme
     sil_Habitat(habitat);
     for (int i = 0; i < satir_sayisi; i++) {
         free(matris[i]);
@@ -33,5 +38,3 @@ oyunuBaslat( habitat, satir_sayisi, sutun_sayisi);
 
     return 0;
 }
-
-

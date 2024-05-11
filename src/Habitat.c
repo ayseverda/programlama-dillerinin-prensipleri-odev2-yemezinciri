@@ -16,38 +16,7 @@ Habitat* yeni_Habitat() {
 }
 
 
-void oyunuBaslat(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
-    while (true) {
-        // Her adımda yeme işlemlerini yap
-        adimKararlariniYap(habitat, satir_sayisi, sutun_sayisi);
-        
-        // Kalan canlıları say
-        int kalan_canli_sayisi = 0;
-        for (int i = 0; i < satir_sayisi; i++) {
-            for (int j = 0; j < sutun_sayisi; j++) {
-                if (habitat->grid[i][j] != NULL && habitat->grid[i][j]->sembol != 'X') {
-                    kalan_canli_sayisi++;
-                }
-            }
-        }
-        
-        // Eğer sadece bir canlı kaldıysa veya hiç canlı kalmadıysa döngüden çık
-        if (kalan_canli_sayisi <= 1) {
-            break;
-        }
-    }
-    
-    // Kalan canlıyı bul ve sembolünü ekrana yazdır
-    for (int i = 0; i < satir_sayisi; i++) {
-        for (int j = 0; j < sutun_sayisi; j++) {
-            if (habitat->grid[i][j] != NULL && habitat->grid[i][j]->sembol != 'X') {
-                printf("Son kalan canli: %c\n", habitat->grid[i][j]->sembol);
-                return;
-            }
-        }
-    }
-    printf("Hic canli kalmadi.\n");
-}
+
 
 
 char** veri_matrisi_oku(const char* dosya_ad, int* satir_sayisi, int* sutun_sayisi) {
@@ -110,7 +79,20 @@ char** veri_matrisi_oku(const char* dosya_ad, int* satir_sayisi, int* sutun_sayi
     return matris;
 }
 
+void sil_matris(char** matris, int satir_sayisi) {
+    if (matris == NULL) {
+        return;
+    }
+    for (int i = 0; i < satir_sayisi; i++) {
+        free(matris[i]);
+    }
+    free(matris);
+}
+
+
 void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun_sayisi) {
+    habitat->satir_sayisi = satir_sayisi;
+    habitat->sutun_sayisi = sutun_sayisi;
     habitat->grid = (Canli***)malloc(satir_sayisi * sizeof(Canli**));
     if (habitat->grid == NULL) {
         perror("Bellek hatasi");
@@ -122,23 +104,23 @@ void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun
             perror("Bellek hatasi");
             exit(EXIT_FAILURE);
         }
+        for (int j = 0; j < sutun_sayisi; j++) {
+            habitat->grid[i][j] = NULL; // Başlangıçta tüm hücreleri NULL olarak ayarlayalım
+        }
     }
 
     for (int i = 0; i < satir_sayisi; i++) {
         for (int j = 0; j < sutun_sayisi; j++) {
             int sayi = matris[i][j];
-            Canli* canli;
+            Canli* canli = NULL;
 
             if (sayi >= 1 && sayi <= 9) {
                 canli = (Canli*)yeni_Bitki(sayi, i, j);
-            } 
-			else if (sayi >= 10 && sayi <= 20) {
+            } else if (sayi >= 10 && sayi <= 20) {
                 canli = (Canli*)yeni_Bocek(sayi, i, j);
-            } 
-			else if (sayi >= 21 && sayi <= 50) {
+            } else if (sayi >= 21 && sayi <= 50) {
                 canli = (Canli*)yeni_Sinek(sayi, i, j);
-            } 
-			else if (sayi >= 51 && sayi <= 99) {
+            } else if (sayi >= 51 && sayi <= 99) {
                 canli = (Canli*)yeni_Pire(sayi, i, j);
             }
 
@@ -147,17 +129,23 @@ void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun
     }
 }
 
+
 void sil_Habitat(Habitat* habitat) {
+    if (habitat == NULL) {
+        return;
+    }
     // grid içindeki tüm hücrelerin belleğini serbest bırak
     for (int i = 0; i < habitat->satir_sayisi; i++) {
         for (int j = 0; j < habitat->sutun_sayisi; j++) {
-            free(habitat->grid[i][j]);
+            sil_Canli(habitat->grid[i][j]); // Her Canli nesnesi için belleği serbest bırak
         }
         free(habitat->grid[i]);
     }
     free(habitat->grid);
     free(habitat);
 }
+
+
 
 void habitatYazdir(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
     for (int i = 0; i < satir_sayisi; i++) {
@@ -171,12 +159,14 @@ void habitatYazdir(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 
 void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
     // current hücresi 0,0'dan başlayacak
-   int nextRow = 0;
- for (int i = 0; i < satir_sayisi; i++) {
+    int nextRow = 0;
+    int kalan_canli_sayisi = 0; // Kalan canlı sayısını takip etmek için bir değişken
+    for (int i = 0; i < satir_sayisi; i++) {
         // Her bir sütun için döngü
         for (int j = 0; j < sutun_sayisi; j++) {
             // current hücresini al (0,0'dan başlar)
             Canli* current = habitat->grid[0][0];
+            
             // Eğer current null ise veya sembolü 'X' ise, null olmayan ve 'X' sembolü taşımayan ilk hücreyi bul
             if (current == NULL || current->sembol == 'X') {
                 int row = 0;
@@ -216,12 +206,42 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
             kararAl(current, komsu);
             // Habitatı güncelle
-			system("cls");
+			
 			printf("\n");
             habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
+            system("cls");
+            // Her adımda kalan canlı sayısını kontrol et
+            kalan_canli_sayisi = 0;
+            for (int m = 0; m < satir_sayisi; m++) {
+                for (int n = 0; n < sutun_sayisi; n++) {
+                    if (habitat->grid[m][n] != NULL && habitat->grid[m][n]->sembol != 'X') {
+                        kalan_canli_sayisi++;
+                    }
+                }
+            }
+            
+            // Eğer sadece bir canlı kaldıysa, döngülerden çık
+            if (kalan_canli_sayisi <= 1) {
+                goto cikis; // Döngülerden çıkmak için etiketli bir atama (goto) kullanıyoruz
+            }
         }
     }
+    
+    // Döngülerden çıkmak için kullanılan etiket
+    cikis:
+    
+    // Son kalan canlıyı bul ve sembolünü ekrana yazdır
+    for (int i = 0; i < satir_sayisi; i++) {
+        for (int j = 0; j < sutun_sayisi; j++) {
+            if (habitat->grid[i][j] != NULL && habitat->grid[i][j]->sembol != 'X') {
+                printf("Son kalan canli: %c\n", habitat->grid[i][j]->sembol);
+                return;
+            }
+        }
+    }
+    printf("Hic canli kalmadi.\n");
 }
+
 
 		
 		
