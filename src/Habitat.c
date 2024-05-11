@@ -251,7 +251,7 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
     
         if (current->sembol == 'B' && komsu->sembol == 'P') { 
 		
-            piresil((Pire**)&komsu);
+            piresil((Pire**)komsu);
 		komsu->sembol = 'X';}
  
 		else if (current->sembol == 'B' && komsu->sembol == 'C') {
@@ -300,7 +300,7 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 			
         } else if (current->sembol == 'C' && komsu->sembol == 'P') {
 			printf("kararal");
-            piresil((Pire**)&komsu);
+            piresil((Pire**)komsu);
 			printf("kararakindi");
 			komsu->sembol = 'X';
         } else if (current->sembol == 'C' && komsu->sembol == 'C') {
@@ -326,22 +326,22 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 		
 		
 		else if (current->sembol == 'P' && komsu->sembol == 'C') {
-            piresil((Pire**)&current);
+            piresil((Pire**)current);
 			current->sembol = 'X';
         } else if (current->sembol == 'P' && komsu->sembol == 'S') {
-            piresil((Pire**)&current);
+            piresil((Pire**)current);
 		current->sembol = 'X';}
 		else if (current->sembol == 'P' && komsu->sembol == 'B') {
-            piresil((Pire**)&current);
+            piresil((Pire**)current);
 			current->sembol = 'X';
 			
 			
         } else if (current->sembol == 'P' && komsu->sembol == 'P') {
             if (((Pire*)current)->sayisalDeger > ((Pire*)komsu)->sayisalDeger) {
-                piresil((Pire**)&komsu);
+                piresil((Pire**)komsu);
 				komsu->sembol = 'X';
             } else if(((Pire*)current)->sayisalDeger < ((Pire*)komsu)->sayisalDeger) {
-                piresil((Pire**)&current);
+                piresil((Pire**)current);
 				current->sembol= 'X';
             }
 			else if (((Pire*)current)->sayisalDeger == ((Pire*)komsu)->sayisalDeger) {
@@ -368,7 +368,7 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 
 
 		else if (current->sembol == 'S' && komsu->sembol == 'P') {
-            piresil((Pire**)&komsu);
+            piresil((Pire**)komsu);
 			komsu->sembol = 'X';
         } else if (current->sembol == 'S' && komsu->sembol == 'C') {
             boceksil((Bocek**)komsu);
