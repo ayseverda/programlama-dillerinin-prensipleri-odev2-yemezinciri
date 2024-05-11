@@ -6,16 +6,18 @@ void pireYazdir(Canli* pire) {
     printf("Pire: %c\n", pire->sembol);
 }
 
+
 Pire* yeni_Pire(int sayisalDeger, int konumX, int konumY) {
     Pire* pire = (Pire*)malloc(sizeof(Pire));
     if (pire == NULL) {
-        perror("Bellek tahsisi başarısız");
+        fprintf(stderr, "Bellek tahsisi hatasi\n");
         exit(EXIT_FAILURE);
     }
     pire->base = *yeni_Bocek(sayisalDeger, konumX, konumY);
     pire->base.base.yazdir = pireYazdir;
     pire->base.base.sembol = 'P'; // Pire sembolünü 'p' olarak ayarla
-  pire->sayisalDeger = sayisalDeger; // sayisalDeger'i atama
+    pire->sayisalDeger = sayisalDeger; // sayisalDeger'i atama
+  
     return pire;
 }
 void piresil(Pire** pire) {
@@ -24,7 +26,7 @@ void piresil(Pire** pire) {
     }
 
     // İlgili kaynakları serbest bırak
-    free(*pire);
-    *pire = NULL; // pire konumuna NULL atama
+    free(*pire); // pireyi temizle
+    *pire = NULL; // pire işaretçisine NULL atama
     printf("pire silindi....");
-}
+}  

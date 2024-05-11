@@ -13,6 +13,7 @@ Sinek* yeni_Sinek(int sayisalDeger, int konumX, int konumY) {
     sinek->base.base.sembol = 'S'; // Sinek sembolünü 'S' olarak ayarla
   sinek->sayisalDeger = sayisalDeger; // sayisalDeger'i atama
     return sinek;
+	
 }
 void sineksil(Sinek** sinek) {
     if (*sinek == NULL) {

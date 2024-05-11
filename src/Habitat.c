@@ -8,7 +8,7 @@
 #include "Sinek.h"
 #include "Pire.h"
 #include <string.h>
-
+#include <unistd.h>
 Habitat* yeni_Habitat() {
     srand(time(NULL));
     Habitat* habitat = (Habitat*)malloc(sizeof(Habitat));
@@ -201,16 +201,15 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
                 }         
             // komsu hücresini belirle
             komsu = habitat->grid[nextRow][nextColumn];
-            printf("Current: (%d, %d)\n", current->konumX, current->konumY);
-            printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
+            //printf("Current: (%d, %d)\n", current->konumX, current->konumY);
+            //printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
             kararAl(current,komsu,satir_sayisi,sutun_sayisi);
             // Habitatı güncelle
 			
-			printf("\n");
-            habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
-           // system("cls");
-            // Her adımda kalan canlı sayısını kontrol et
+			system("cls");
+    habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
+   
             kalan_canli_sayisi = 0;
             for (int m = 0; m < satir_sayisi; m++) {
                 for (int n = 0; n < sutun_sayisi; n++) {
@@ -219,6 +218,14 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
                     }
                 }
             }
+            #pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+// usleep fonksiyonu çağrısı
+	usleep(30000); // 0.3 saniye (300.000 mikrosaniye) bekletme
+
+// Uyarının gösterilmesini geri yükleme
+	#pragma GCC diagnostic pop 
             
             // Eğer sadece bir canlı kaldıysa, döngülerden çık
             if (kalan_canli_sayisi <= 1) {
@@ -226,10 +233,9 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             }
         }
     }
-    
+   
     // Döngülerden çıkmak için kullanılan etiket
     cikis:
-    
     // Son kalan canlıyı bul ve sembolünü ekrana yazdır
     for (int i = 0; i < satir_sayisi; i++) {
         for (int j = 0; j < sutun_sayisi; j++) {
@@ -261,10 +267,7 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 		else if (current->sembol == 'B' && komsu->sembol == 'S') {
             sineksil((Sinek**)komsu);
 		komsu->sembol = 'X';}
-		
-		
-		
-		
+	
         else if (current->sembol == 'B' && komsu->sembol == 'B') {
         
 			if (((Bitki*)current)->sayisalDeger > ((Bitki*)komsu)->sayisalDeger) {

@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h> // for free
-#include <conio.h> // for getch
+#include <stdlib.h> 
+#include <conio.h> 
 #include "Habitat.h"
 #include "Bocek.h"
 #include "Canli.h"
@@ -19,13 +19,12 @@ int main() {
 	habitatYazdir(habitat,satir_sayisi, sutun_sayisi);
     getch(); // Kullanıcının bir tuşa basmasını bekler
     
-    // Oyunu başlat
+ 
     printf("Habitat:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 
-    printf("\nAdim kararlarini yapiliyor...\n");
+    
     adimKararlariniYap(habitat, satir_sayisi, sutun_sayisi);
-   
     printf("\nSon durum:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 
