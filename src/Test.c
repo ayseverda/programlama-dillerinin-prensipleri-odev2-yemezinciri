@@ -13,14 +13,14 @@ int main() {
 
     Habitat* habitat = yeni_Habitat();
     habitatOlustur(habitat, matris, satir_sayisi, sutun_sayisi);
-
+oyunuBaslat( habitat, satir_sayisi, sutun_sayisi);
     printf("Habitat:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 
     printf("\nAdim kararlarini yapiliyor...\n");
 	
     adimKararlariniYap(habitat, satir_sayisi, sutun_sayisi);
-
+	
     printf("\nSon durum:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 

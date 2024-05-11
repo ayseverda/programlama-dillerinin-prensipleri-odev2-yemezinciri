@@ -16,11 +16,10 @@ pire->sayisalDeger = sayisalDeger; // sayisalDeger'i atama
     return pire;
 }
 
-
 void piresil(Pire** pire) {
     if (pire == NULL || *pire == NULL) return;
 
     free(*pire);
     *pire = NULL;
-	printf("piresilindi");
+    printf("Pire silindi\n");
 }

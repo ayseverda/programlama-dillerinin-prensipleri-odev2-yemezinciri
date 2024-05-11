@@ -15,6 +15,41 @@ Habitat* yeni_Habitat() {
     return habitat;
 }
 
+
+void oyunuBaslat(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
+    while (true) {
+        // Her adımda yeme işlemlerini yap
+        adimKararlariniYap(habitat, satir_sayisi, sutun_sayisi);
+        
+        // Kalan canlıları say
+        int kalan_canli_sayisi = 0;
+        for (int i = 0; i < satir_sayisi; i++) {
+            for (int j = 0; j < sutun_sayisi; j++) {
+                if (habitat->grid[i][j] != NULL && habitat->grid[i][j]->sembol != 'X') {
+                    kalan_canli_sayisi++;
+                }
+            }
+        }
+        
+        // Eğer sadece bir canlı kaldıysa veya hiç canlı kalmadıysa döngüden çık
+        if (kalan_canli_sayisi <= 1) {
+            break;
+        }
+    }
+    
+    // Kalan canlıyı bul ve sembolünü ekrana yazdır
+    for (int i = 0; i < satir_sayisi; i++) {
+        for (int j = 0; j < sutun_sayisi; j++) {
+            if (habitat->grid[i][j] != NULL && habitat->grid[i][j]->sembol != 'X') {
+                printf("Son kalan canli: %c\n", habitat->grid[i][j]->sembol);
+                return;
+            }
+        }
+    }
+    printf("Hic canli kalmadi.\n");
+}
+
+
 char** veri_matrisi_oku(const char* dosya_ad, int* satir_sayisi, int* sutun_sayisi) {
     FILE* dosya = fopen(dosya_ad, "r");
     if (dosya == NULL) {
@@ -171,12 +206,14 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             }
             // komsu hücresini belirle
             komsu = habitat->grid[nextRow][nextColumn];
-            printf("Current: (%d, %d)\n", current->konumX, current->konumY);
-            printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
+            
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
             kararAl(current, komsu);
             // Habitatı güncelle
             printf("\n");
+			system("cls");
+			printf("Current: (%d, %d)\n", current->konumX, current->konumY);
+            printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
             habitatYazdir(habitat, satir_sayisi, sutun_sayisi); // habitatYazdir fonksiyonunu çağırırken argümanları ekleyin
         }
     }
