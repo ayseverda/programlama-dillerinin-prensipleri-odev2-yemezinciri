@@ -7,8 +7,7 @@ typedef struct PIRE Pire;
 
 struct PIRE {
     Bocek base;
-    int sayisalDeger; // Pire'nin sayisalDeger'i
-	char sembol;
+    int sayisalDeger; // pire'in sayisalDeger'i
 };
 
 Pire* yeni_Pire(int sayisalDeger, int konumX, int konumY);

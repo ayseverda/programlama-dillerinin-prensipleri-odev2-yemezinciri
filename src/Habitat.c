@@ -131,11 +131,14 @@ void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun
 
             if (sayi >= 1 && sayi <= 9) {
                 canli = (Canli*)yeni_Bitki(sayi, i, j);
-            } else if (sayi >= 10 && sayi <= 20) {
+            } 
+			else if (sayi >= 10 && sayi <= 20) {
                 canli = (Canli*)yeni_Bocek(sayi, i, j);
-            } else if (sayi >= 21 && sayi <= 50) {
+            } 
+			else if (sayi >= 21 && sayi <= 50) {
                 canli = (Canli*)yeni_Sinek(sayi, i, j);
-            } else {
+            } 
+			else if (sayi >= 51 && sayi <= 99) {
                 canli = (Canli*)yeni_Pire(sayi, i, j);
             }
 
@@ -167,54 +170,55 @@ void habitatYazdir(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 
 
 void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
-    // Her bir satır için döngü
-    int nextRow = 0; // nextRow'u döngülerin dışında tanımlayalım
-    for (int i = 0; i < satir_sayisi; i++) {
+    // current hücresi 0,0'dan başlayacak
+   int nextRow = 0;
+ for (int i = 0; i < satir_sayisi; i++) {
         // Her bir sütun için döngü
         for (int j = 0; j < sutun_sayisi; j++) {
             // current hücresini al (0,0'dan başlar)
-            Canli* current = habitat->grid[i][j];
+            Canli* current = habitat->grid[0][0];
             // Eğer current null ise veya sembolü 'X' ise, null olmayan ve 'X' sembolü taşımayan ilk hücreyi bul
             if (current == NULL || current->sembol == 'X') {
                 int row = 0;
                 int column = 0;
                 while (habitat->grid[row][column] == NULL || habitat->grid[row][column]->sembol == 'X') {
                     column++;
+					
                     if (column >= sutun_sayisi) {
                         row++;
                         if (row >= satir_sayisi) {
-                            break;  // Hücre bulunamadı, döngüden çık
+                            break;						// Hücre bulunamadı, döngüden çık
                         }
                         column = 0; // Satır değiştiği için sütun indeksini sıfırla
-                        // Satır değiştiğinde nextRow değerini de güncelle
-                        nextRow = row;
-                    }
+						
+						// Satır değiştiğinde nextRow değerini de güncelle
+						//nextRow = row;
+                    }              
                 }
-                current = habitat->grid[row][column];
+				current = habitat->grid[row][column];
             }
             // komsu hücresini belirle (0,1'den başlar)
             Canli* komsu = NULL;
             int nextColumn = j + 1;
             if (nextColumn >= sutun_sayisi) {
-                nextRow++;
+				 nextRow++; 
                 nextColumn = 0; // Sütun indeksini sıfırla
-                // Bir sonraki satıra geç
+                    // Bir sonraki satıra geç
             }
-            // Satır indeksi kontrol et, eğer satır sonuna gelindi ise sıfırla
-            if (nextRow >= satir_sayisi && nextColumn == sutun_sayisi) {
-                break;
-            }
+                // Satır indeksi kontrol et, eğer satır sonuna gelindi ise sıfırla
+                if (nextRow >= satir_sayisi && nextColumn == sutun_sayisi ) {
+                   break;
+                }         
             // komsu hücresini belirle
             komsu = habitat->grid[nextRow][nextColumn];
-            
+            printf("Current: (%d, %d)\n", current->konumX, current->konumY);
+            printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
             kararAl(current, komsu);
             // Habitatı güncelle
-            printf("\n");
 			system("cls");
-			printf("Current: (%d, %d)\n", current->konumX, current->konumY);
-            printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
-            habitatYazdir(habitat, satir_sayisi, sutun_sayisi); // habitatYazdir fonksiyonunu çağırırken argümanları ekleyin
+			printf("\n");
+            habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
         }
     }
 }
@@ -266,7 +270,9 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 			current->sembol = 'X';
 			
         } else if (current->sembol == 'C' && komsu->sembol == 'P') {
+			printf("kararal");
             piresil((Pire**)komsu);
+			printf("kararakindi");
 			komsu->sembol = 'X';
         } else if (current->sembol == 'C' && komsu->sembol == 'C') {
             if (((Bocek*)current)->sayisalDeger > ((Bocek*)komsu)->sayisalDeger) {
