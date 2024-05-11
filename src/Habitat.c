@@ -209,7 +209,7 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 			
 			printf("\n");
             habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
-            system("cls");
+            //system("cls");
             // Her adımda kalan canlı sayısını kontrol et
             kalan_canli_sayisi = 0;
             for (int m = 0; m < satir_sayisi; m++) {
@@ -251,7 +251,7 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
     
         if (current->sembol == 'B' && komsu->sembol == 'P') { 
 		
-            piresil((Pire**)komsu);
+            piresil((Pire**)&komsu);
 		komsu->sembol = 'X';}
  
 		else if (current->sembol == 'B' && komsu->sembol == 'C') {
@@ -292,7 +292,7 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 			
         } else if (current->sembol == 'C' && komsu->sembol == 'P') {
 			printf("kararal");
-            piresil((Pire**)komsu);
+            piresil((Pire**)&komsu);
 			printf("kararakindi");
 			komsu->sembol = 'X';
         } else if (current->sembol == 'C' && komsu->sembol == 'C') {
@@ -304,26 +304,26 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 				current->sembol = 'X';
             }
         } else if (current->sembol == 'P' && komsu->sembol == 'C') {
-            piresil((Pire**)current);
+            piresil((Pire**)&current);
 			current->sembol = 'X';
         } else if (current->sembol == 'P' && komsu->sembol == 'S') {
-            piresil((Pire**)current);
+            piresil((Pire**)&current);
 		current->sembol = 'X';}
 		else if (current->sembol == 'P' && komsu->sembol == 'B') {
-            piresil((Pire**)current);
+            piresil((Pire**)&current);
 			current->sembol = 'X';
 			
 			
         } else if (current->sembol == 'P' && komsu->sembol == 'P') {
             if (((Pire*)current)->sayisalDeger > ((Pire*)komsu)->sayisalDeger) {
-                piresil((Pire**)komsu);
+                piresil((Pire**)&komsu);
 				komsu->sembol = 'X';
             } else {
-                piresil((Pire**)current);
+                piresil((Pire**)&current);
 				current->sembol= 'X';
             }
         } else if (current->sembol == 'S' && komsu->sembol == 'P') {
-            piresil((Pire**)komsu);
+            piresil((Pire**)&komsu);
 			komsu->sembol = 'X';
         } else if (current->sembol == 'S' && komsu->sembol == 'C') {
             boceksil((Bocek**)komsu);
@@ -340,4 +340,5 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 				komsu->sembol = 'X';
             }
         }
+
     }
