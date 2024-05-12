@@ -8,30 +8,24 @@
 #include "Sinek.h"
 #include "Pire.h"
 #include <string.h>
-#include <unistd.h>
+//habitat oluşturalım
 Habitat* yeni_Habitat() {
     srand(time(NULL));
     Habitat* habitat = (Habitat*)malloc(sizeof(Habitat));
     return habitat;
 }
-
-
-
-
-
+//dosyanın satır ve sütun sayısını tespit ederiz
 char** veri_matrisi_oku(const char* dosya_ad, int* satir_sayisi, int* sutun_sayisi) {
     FILE* dosya = fopen(dosya_ad, "r");
     if (dosya == NULL) {
         perror("Dosya açma hatasi");
         exit(EXIT_FAILURE);
     }
-
-    // Satır ve sütun sayısını belirlemek için ilk okuma
+    // Satır ve sütun sayısını belirlemek için
     *satir_sayisi = 0;
     *sutun_sayisi = 0;
     int maksimum_sutun_sayisi = 0; // En fazla sütun sayısını tutmak için bir değişken ekleyelim
     char satir[MAX_SUTUN]; // Bir satırın en fazla MAX_SUTUN karakter olmasını varsayalım
-
     // Dosyayı okuyarak satır ve sütun sayısını belirle
     while (fgets(satir, sizeof(satir), dosya) != NULL) {
         (*satir_sayisi)++;
@@ -78,7 +72,7 @@ char** veri_matrisi_oku(const char* dosya_ad, int* satir_sayisi, int* sutun_sayi
     fclose(dosya);
     return matris;
 }
-
+// matrisi serbest bırakır
 void sil_matris(char** matris, int satir_sayisi) {
     if (matris == NULL) {
         return;
@@ -89,7 +83,7 @@ void sil_matris(char** matris, int satir_sayisi) {
     free(matris);
 }
 
-
+// habitat olustur
 void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun_sayisi) {
     habitat->satir_sayisi = satir_sayisi;
     habitat->sutun_sayisi = sutun_sayisi;
@@ -129,7 +123,7 @@ void habitatOlustur(Habitat* habitat, char** matris, int satir_sayisi, int sutun
     }
 }
 
-
+// habitat sil
 void sil_Habitat(Habitat* habitat) {
     if (habitat == NULL) {
         return;
@@ -144,9 +138,7 @@ void sil_Habitat(Habitat* habitat) {
     free(habitat->grid);
     free(habitat);
 }
-
-
-
+//habitat yazdir
 void habitatYazdir(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
     for (int i = 0; i < satir_sayisi; i++) {
         for (int j = 0; j < sutun_sayisi; j++) {
@@ -155,8 +147,7 @@ void habitatYazdir(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
         printf("\n");
     }
 }
-
-
+// hangi hucrelerin secilecegini belirleyen fonksiyon
 void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
     // current hücresi 0,0'dan başlayacak
     int nextRow = 0;
@@ -207,10 +198,9 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             kararAl(current,komsu,satir_sayisi,sutun_sayisi);
             // Habitatı güncelle
 			
-			system("cls");
 			printf("\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
-   
+	system("cls");
             kalan_canli_sayisi = 0;
             for (int m = 0; m < satir_sayisi; m++) {
                 for (int n = 0; n < sutun_sayisi; n++) {
@@ -219,22 +209,12 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
                     }
                 }
             }
-            #pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-// usleep fonksiyonu çağrısı
-	usleep(1000); // 0.3 saniye (300.000 mikrosaniye) bekletme
-
-// Uyarının gösterilmesini geri yükleme
-	#pragma GCC diagnostic pop 
-            
             // Eğer sadece bir canlı kaldıysa, döngülerden çık
             if (kalan_canli_sayisi <= 1) {
                 goto cikis; // Döngülerden çıkmak için etiketli bir atama (goto) kullanıyoruz
             }
         }
     }
-   
     // Döngülerden çıkmak için kullanılan etiket
     cikis:
     // Son kalan canlıyı bul ve sembolünü ekrana yazdır
@@ -247,15 +227,9 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
             }
         }
     }
-    printf("Hic canli kalmadi.\n");
-}
-
-
-		
-		
+}	
 void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
     // İki canlının türüne göre işlem yap
-    
         if (current->sembol == 'B' && komsu->sembol == 'P') { 
             piresil((Pire**)komsu);
 			komsu->sembol = 'X';}
@@ -265,7 +239,6 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 		else if (current->sembol == 'B' && komsu->sembol == 'S') {
         sineksil((Sinek**)komsu);
 		komsu->sembol = 'X';}
-	
         else if (current->sembol == 'B' && komsu->sembol == 'B') {
         
 			if (((Bitki*)current)->sayisalDeger > ((Bitki*)komsu)->sayisalDeger) {
@@ -289,9 +262,6 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 								komsu->sembol = 'X';}  
 			 }
 		} 
-		
-		
-		
 		else if (current->sembol == 'C' && komsu->sembol == 'B') {
             bitkisil((Bitki**)komsu);
 		komsu->sembol = 'X';}
@@ -320,10 +290,6 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 								komsu->sembol = 'X';}
                }	
         } 
-		
-		
-		
-		
 		else if (current->sembol == 'P' && komsu->sembol == 'C') {
             piresil((Pire**)current);
 			current->sembol = 'X';
@@ -354,18 +320,6 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 				
 			}
         }
-
-
-
-
-
-
-
-
-
-
-
-
 		else if (current->sembol == 'S' && komsu->sembol == 'P') {
             piresil((Pire**)komsu);
 			komsu->sembol = 'X';
@@ -393,5 +347,4 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 				{ sineksil((Sinek**)komsu);
 								komsu->sembol = 'X';}
         }
-
 }}

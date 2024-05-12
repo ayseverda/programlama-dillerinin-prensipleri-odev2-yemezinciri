@@ -25,7 +25,7 @@ int main() {
 
     
     adimKararlariniYap(habitat, satir_sayisi, sutun_sayisi);
-    printf("\nSon durum:\n");
+    printf("Son durum:\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
 
     // Bellek temizleme
