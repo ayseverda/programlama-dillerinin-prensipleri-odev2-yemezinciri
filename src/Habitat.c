@@ -380,10 +380,10 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
             sineksil((Sinek**)current);
 			current->sembol = 'X';
         } else if (current->sembol == 'S' && komsu->sembol == 'S') {
-            if (((Sinek*)current)->sayisalDeger > ((Sinek*)komsu)->sayisalDeger) {
+            if (((Sinek*)current)->sayisalDeger < ((Sinek*)komsu)->sayisalDeger) {
                 sineksil((Sinek**)current);
 				current->sembol = 'X';
-            } else if(((Sinek*)current)->sayisalDeger < ((Sinek*)komsu)->sayisalDeger) {
+            } else if(((Sinek*)current)->sayisalDeger > ((Sinek*)komsu)->sayisalDeger) {
                 sineksil((Sinek**)komsu);
 				komsu->sembol = 'X';
             }
