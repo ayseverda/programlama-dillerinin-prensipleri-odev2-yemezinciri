@@ -20,7 +20,7 @@ void boceksil(Bocek** bocek) {
     }
 
     // İlgili kaynakları serbest bırak
-    free(*bocek);
-    *bocek = NULL; // Bocek konumuna NULL atama
+    free(*bocek); // Bocek nesnesini temizle
+    *bocek = NULL; // Bocek işaretçisine NULL atama
     printf("Bocek silindi....");
 }

@@ -24,9 +24,8 @@ void piresil(Pire** pire) {
     if (*pire == NULL) {
         return;
     }
-
     // İlgili kaynakları serbest bırak
-    free(*pire); // pireyi temizle
-    *pire = NULL; // pire işaretçisine NULL atama
+  //  free(*pire); // pireyi temizle
+   *pire = NULL; // pire işaretçisine NULL atama
     printf("pire silindi....");
 }  

@@ -201,13 +201,14 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
                 }         
             // komsu hücresini belirle
             komsu = habitat->grid[nextRow][nextColumn];
-            //printf("Current: (%d, %d)\n", current->konumX, current->konumY);
-            //printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
+            printf("Current: (%d, %d)\n", current->konumX, current->konumY);
+            printf("komsu: (%d, %d)\n", komsu->konumX, komsu->konumY);
             // Ardından, current ve komsu değişkenlerini kullanarak kararları yapabiliriz
             kararAl(current,komsu,satir_sayisi,sutun_sayisi);
             // Habitatı güncelle
 			
 			system("cls");
+			printf("\n");
     habitatYazdir(habitat, satir_sayisi, sutun_sayisi);
    
             kalan_canli_sayisi = 0;
@@ -222,7 +223,7 @@ void adimKararlariniYap(Habitat* habitat, int satir_sayisi, int sutun_sayisi) {
 	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 // usleep fonksiyonu çağrısı
-	usleep(30000); // 0.3 saniye (300.000 mikrosaniye) bekletme
+	usleep(1000); // 0.3 saniye (300.000 mikrosaniye) bekletme
 
 // Uyarının gösterilmesini geri yükleme
 	#pragma GCC diagnostic pop 
@@ -256,16 +257,13 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
     // İki canlının türüne göre işlem yap
     
         if (current->sembol == 'B' && komsu->sembol == 'P') { 
-		
             piresil((Pire**)komsu);
-		komsu->sembol = 'X';}
- 
+			komsu->sembol = 'X';}
 		else if (current->sembol == 'B' && komsu->sembol == 'C') {
-            bitkisil((Bitki**)current);
+        bitkisil((Bitki**)current);
 		current->sembol = 'X';}
-        
 		else if (current->sembol == 'B' && komsu->sembol == 'S') {
-            sineksil((Sinek**)komsu);
+        sineksil((Sinek**)komsu);
 		komsu->sembol = 'X';}
 	
         else if (current->sembol == 'B' && komsu->sembol == 'B') {
@@ -302,9 +300,7 @@ void kararAl(Canli* current, Canli* komsu, int satir_sayisi, int sutun_sayisi) {
 			current->sembol = 'X';
 			
         } else if (current->sembol == 'C' && komsu->sembol == 'P') {
-			printf("kararal");
-            piresil((Pire**)komsu);
-			printf("kararakindi");
+		   piresil((Pire**)komsu);
 			komsu->sembol = 'X';
         } else if (current->sembol == 'C' && komsu->sembol == 'C') {
             if (((Bocek*)current)->sayisalDeger > ((Bocek*)komsu)->sayisalDeger) {
